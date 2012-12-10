@@ -1,4 +1,4 @@
-Client-Server Data Synchronization for Ember-Data
+Client <=> Server data synchronization for Ember-Data
 =================================================
 
 Two-way data synchronization of client-side storage with server-side REST API.
