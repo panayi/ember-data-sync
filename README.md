@@ -70,6 +70,7 @@ Ember-data-sync expects that your server:
 
 Customizable server options:
 
+```js
 App.Store = DS.SyncStore.extend({
 
   // Server configuration options
@@ -83,6 +84,8 @@ App.Store = DS.SyncStore.extend({
   // ...
   // adapter: DS.IndexedDB.adapter({ /* ... */ })
 });
+
+```
 
 Since ids for records are created on the client, if you are using Rails you probably want to use a different key for records primary ids.... (code soon)
 
