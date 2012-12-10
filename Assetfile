@@ -1,0 +1,44 @@
+LIBNAME = 'ember-data-sync'
+
+require "rake-pipeline-web-filters"
+require "json"
+require "uglifier"
+
+class EmberProductionFilter < Rake::Pipeline::Filter
+  def generate_output(inputs, output)
+    inputs.each do |input|
+      result = File.read(input.fullpath)
+      result.gsub!(%r{^(\s)*Ember\.(assert|deprecate|warn)\((.*)\).*$}, "")
+      output.write result
+    end
+  end
+end
+
+output 'dist'
+
+input 'lib' do
+  output 'dist'
+  name = 'ember-data-sync'
+  match '**/main.js' do
+    neuter(
+      # Possibly depend on JS files within same or subdirectories
+      :additional_dependencies => proc { |input|
+        Dir.glob(File.join(File.dirname(input.fullpath),'**','*.js'))
+      },
+      # Append .js to module names to resolve filenames
+      :path_transform => proc { |path, input|
+        path + '.js'
+      },
+      :closure_wrap => true
+    ) do |filename|
+      "#{name}.js"
+    end
+
+    if ENV['RAKEP_MODE'] == 'production'
+      # filter EmberProductionFilter
+      uglify
+    end
+  end
+end
+
+# vim: filetype=ruby
