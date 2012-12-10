@@ -1,5 +1,3 @@
-LIBNAME = 'ember-data-sync'
-
 require "rake-pipeline-web-filters"
 require "json"
 require "uglifier"
