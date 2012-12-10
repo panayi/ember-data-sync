@@ -1,18 +1,25 @@
 Client-Server Data Synchronization for Ember-Data
 =================================================
 
-Two-way data synchronization of a client-side storage with a server-side REST API.
+Two-way data synchronization of client-side storage with server-side REST API.
 
 With Ember-data-sync application data is stored and synchronized to both a client-side storage (such as IndexedDB or localStorage) and a server-side RESTful storage. 
 
 Features:
 ---------
 
-* Use any adapter for the client-side storage ([localStorage]https://github.com/rpflorence/ember-localstorage-adapter, DS.RESTAdapter, ...)
+* Use any adapter for the client-side storage, such as [ember-data-localStorage-adapter](https://github.com/rpflorence/ember-localstorage-adapter), [ember-data-indexeddb-adapter](https://github.com/panayi/ember-data-indexeddb-adapter), DS.RESTAdapter, etc.
 * Hides away the internal synchronization logic.
 * Synchronization is done automatically with each client-side storage commit. Also, the app is able to trigger synchronizations manually.
 * Apps can work offline. Any records created/updated/deleted offline are persisted to the client-side storage, and committed on the next app load with online status.
 * Ability to synchronize data across multiple clients. New devices are synchronized on first load.
+
+
+Building
+========
+
+    $ bundle install
+    $ bundle exec rakep
 
 
 Usage
