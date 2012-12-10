@@ -25,9 +25,9 @@ Building
 Usage
 =====
 
-1. Include `ember-data-sync.js` in your ember/ember-data app.
+* Include `ember-data-sync.js` in your ember/ember-data app.
 
-2. Extend your App.Store from DS.SyncStore. Define the adapter you want to use for client-side storage:
+* Extend your App.Store from DS.SyncStore. Define the adapter you want to use for client-side storage:
 
 ```js
 App.Store = DS.SyncStore.extend({
@@ -40,7 +40,7 @@ App.Store = DS.SyncStore.extend({
 
 ```
 
-3. Currently you need to define the mappings of JSON keys (e.g, person, persons, contacts) to model types (e.g. App.Person, App.Contact):
+* Currently you need to define the mappings of JSON keys (e.g, person, persons, contacts) to model types (e.g. App.Person, App.Contact):
 
 ```js
 App.Store = DS.SyncStore.extend({
@@ -57,7 +57,8 @@ App.Store = DS.SyncStore.extend({
 
 ```
 
-4. Server configuration
+Server configuration
+--------------------
 
 Ember-data-sync expects that your server:
 
