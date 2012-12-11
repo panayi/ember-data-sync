@@ -117,7 +117,7 @@ The synchronization algorithm has the following properties:
       the server with every up-sync/down-sync combination. In-between syncs, it is not ensured that a client is in sync with the server.
 
 If data is shared among multiple clients, the app may require more frequent synchronizations. In this case 
-the app can manually call DS.ClientStore's downSync() method. For example, the following will synchronize every 30 seconds:
+the app can manually call DS.SyncStore's downSync() method. For example, the following will synchronize every 30 seconds:
 
 
 Todo

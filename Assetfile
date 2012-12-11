@@ -12,6 +12,14 @@ class EmberProductionFilter < Rake::Pipeline::Filter
   end
 end
 
+class ClosureFilter < Rake::Pipeline::Filter
+  def generate_output(inputs, output)
+    inputs.each do |input|
+      output.write "(function() {\n#{input.read}\n})();\n\n"
+    end
+  end
+end
+
 output 'dist'
 
 input 'lib' do
@@ -26,11 +34,12 @@ input 'lib' do
       # Append .js to module names to resolve filenames
       :path_transform => proc { |path, input|
         path + '.js'
-      },
-      :closure_wrap => true
+      }
     ) do |filename|
       "#{name}.js"
     end
+
+    filter ClosureFilter
 
     if ENV['RAKEP_MODE'] == 'production'
       # filter EmberProductionFilter
