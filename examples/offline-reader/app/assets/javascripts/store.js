@@ -1,5 +1,5 @@
-OfflineReader.Store = DS.Store.extend({
-  revision: 4,
+OfflineReader.Store = DS.SyncStore.extend({
+  revision: 10,
   adapter: DS.RESTAdapter.create()
 });
 

@@ -1,5 +1,10 @@
-<h1>Rsses</h1>
-
-<p>Your content here.</p>
-
-{{outlet}}
+<form class="form form-inline" {{action createNewRss target="controller" on="submit"}}>
+	{{view Ember.TextField placeholder="Enter an RSS feed" valueBindind="newRss"}}
+	<button class="btn btn-primary">Submit</button>
+</form>
+<ul class="nav nav-list">
+  <li class="nav-header">RSS Feeds</li>
+  {{#each feed in arrangedContent}}
+    {{view App.RssView contentBinding="feed" tagName="li"}}
+  {{/each}}
+</ul>

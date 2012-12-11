@@ -15,6 +15,8 @@
 //= require handlebars
 //= require ember
 //= require ember-data
+//= require lib/ember-data-indexeddb-adapter
+//= require lib/ember-data-sync
 //= require_self
 //= require offline_reader
 OfflineReader = Ember.Application.create();
