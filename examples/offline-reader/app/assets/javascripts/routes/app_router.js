@@ -3,15 +3,32 @@ OfflineReader.Router = Ember.Router.extend({
 
   root: Ember.Route.extend({
     index: Ember.Route.extend({
-      route: '/'
+      route: '/',
 
-      // You'll likely want to connect a view here.
-      // connectOutlets: function(router) {
-      //   router.get('applicationController').connectOutlet(App.MainView);
-      // }
+      connectOutlets: function(router) {
+        router.get('applicationController').connectOutlet({ name: 'rsses', context: OfflineReader.Rss.find(), outletName: 'rsses' });
+      }
+    }),
 
-      // Layout your routes here...
-    })
+    rss: Ember.Route.extend({
+      route: '/view',
+
+      index: Ember.Route.extend({
+        route: '/rss/:rss_id',
+
+        connectOutlet: function(router, context) {
+          router.get('applicationController').connectOutlet({ name: 'pages', context: OfflineReader.Page.find({rss: context}) });
+        }
+      }),
+
+      show: Ember.Route.extend({
+        route: '/page/:page_id',
+
+        connectOutlet: function(router, context) {
+          router.get('applicationController').connectOutlet({ name: 'pages', context: OfflineReader.Page.find(context.id) });
+        }
+      })
+    }),
   })
 });
 

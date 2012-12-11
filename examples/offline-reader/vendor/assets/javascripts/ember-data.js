@@ -201,7 +201,7 @@ var states = {
     }
   }),
 
-  clean: LoadedState.createWithMixins({
+  clean: LoadedState.create({
     isLoaded: true,
     isDirty: false,
 
@@ -216,7 +216,7 @@ var states = {
     }
   }),
 
-  dirty: LoadedState.createWithMixins({
+  dirty: LoadedState.create({
     isLoaded: true,
     isDirty: true,
 
@@ -2491,6 +2491,10 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
       ids = map(dataList, function(data) {
         return this.preprocessData(type, data);
       }, this);
+      if (this.isServerAdapter) {
+        console.log(this.adapterForType(type).serializer._primaryKey(type))
+        console.log(dataList)
+      }
     }
 
     for (var i=0, l=get(ids, 'length'); i<l; i++) {
@@ -2693,8 +2697,7 @@ DS.Store.reopenClass({
 
 
 (function() {
-var get = Ember.get, set = Ember.set, guidFor = Ember.guidFor,
-    arrayMap = Ember.ArrayPolyfills.map;
+var get = Ember.get, set = Ember.set, guidFor = Ember.guidFor;
 
 /**
   This file encapsulates the various states that a record can transition
@@ -3416,19 +3419,7 @@ var states = {
 DS.StateManager = Ember.StateManager.extend({
   record: null,
   initialState: 'rootState',
-  states: states,
-  unhandledEvent: function(manager, originalEvent) {
-    var record = manager.get('record'),
-        contexts = [].slice.call(arguments, 2),
-        errorMessage;
-    errorMessage  = "Attempted to handle event `" + originalEvent + "` ";
-    errorMessage += "on " + record.toString() + " while in state ";
-    errorMessage += get(this, 'currentState.path') + ". Called with ";
-    errorMessage += arrayMap.call(contexts, function(context){
-                      return Ember.inspect(context);
-                    }).join(', ');
-    throw new Ember.Error(errorMessage);
-  }
+  states: states
 });
 
 })();
@@ -3654,10 +3645,6 @@ DS.Model = Ember.Object.extend(Ember.Evented, {
     this.suspendAssociationObservers(function() {
       this.notifyPropertyChange('data');
     });
-  },
-
-  toStringExtension: function() {
-    return get(this, 'id');
   },
 
   /**

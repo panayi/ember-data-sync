@@ -19,5 +19,7 @@
 //= require lib/ember-data-sync
 //= require_self
 //= require offline_reader
-OfflineReader = Ember.Application.create();
+OfflineReader = Ember.Application.create({
+	databaseName: 'offline-reader-db'
+});
 //= require_tree .

@@ -9,11 +9,7 @@ DS._ModifiedRecordsHelpers = Ember.Mixin.create({
     }, context);
   }
 });
-})();
 
-
-
-(function() {
 var get = Ember.get;
 
 /**
@@ -66,14 +62,10 @@ DS._InternalSyncSerializer = DS.JSONSerializer.extend({
     serialized[name] = record._data[kind][name];
   }
 });
-})();
 
-
-
-(function() {
 var get = Ember.get, set = Ember.set;
 
-DS._ServerStore = DS.Store.extend(DS._ModifiedRerordsHelpers, {
+DS._ServerStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
   init: function() {
     this._super();
     set(this, 'internalSerializer', DS._InternalSyncSerializer.create());
@@ -125,11 +117,7 @@ DS._ServerStore = DS.Store.extend(DS._ModifiedRerordsHelpers, {
   }.property('clientStore.maxModified')
 });
 
-})();
 
-
-
-(function() {
 /**
   The default Transaction class. This class extends the commit method for:
   (a) remembering any modified records (persisted on the client storage)
@@ -160,11 +148,7 @@ DS.ClientTransaction = DS.Transaction.extend({
     };
   }
 });
-})();
 
-
-
-(function() {
 /**
   The main store that is exposed to the app. DS.SyncStore is responsible for:
   (a) reading and writing sync meta data on the client storage
@@ -194,7 +178,7 @@ var newModifiedRecordsBuckets = function() {
   };
 };
 
-DS.ClientStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
+DS.SyncStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
   pendingUpSyncRecords: [],
 
   /*                */
@@ -412,11 +396,7 @@ DS.ClientStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
 });
 
 
-})();
 
-
-
-(function() {
 var get = Ember.get;
 
 DS.Model.reopen({
@@ -438,11 +418,7 @@ DS.Model.reopen({
 
   didLoadStrict: Ember.K
 });
-})();
 
-
-
-(function() {
 var get = Ember.get, set = Ember.set;
 
 // TODO: Should find a better way to initialize the store.
@@ -463,6 +439,9 @@ Ember.onLoad('Ember.Application', function(Application) {
       if (!stateManager) { return; }
       if (property === 'Store') {
         var store = get(stateManager, 'store');
+
+        if (!store) { return; }
+
         var revision = store.revision;
 
         var mappings = get(store, 'adapter.mappings');
@@ -485,11 +464,7 @@ Ember.onLoad('Ember.Application', function(Application) {
 });
 
 
-})();
 
-
-
-(function() {
 DS._ServerSerializer = DS.RESTSerializer.extend({
   // In some cases, it is difficult to change the behavior of 
   // an auto-incrementing id on the server (such is the case in Rails).
@@ -500,11 +475,7 @@ DS._ServerSerializer = DS.RESTSerializer.extend({
     data[keyForId] = id;
   }
 });
-})();
 
-
-
-(function() {
 var get = Ember.get, set = Ember.set;
 
 /**
@@ -586,17 +557,9 @@ DS._ServerAdapter = DS.RESTAdapter.extend({
     };
   }
 });
-})();
 
 
 
-(function() {
-
-})();
-
-
-
-(function() {
 /**
   Store (on the client) the maximum modified (created/updated/deleted/) 
   timestamp among all client stored records.
@@ -604,11 +567,7 @@ DS._ServerAdapter = DS.RESTAdapter.extend({
 DS._MaxModified = DS.Model.extend({
   timestamp: DS.attr('string', { defaultValue: (new Date(0)).toString() }),
 });
-})();
 
-
-
-(function() {
 /**
   Store information about records that were modified 
   on the client (and not committed to server).
@@ -618,17 +577,9 @@ DS._PendingUpSyncRecord = DS.Model.extend({
   recordType: DS.attr('string'),
   pendingReason: DS.attr('string')
 });
-})();
 
 
 
-(function() {
-
-})();
-
-
-
-(function() {
 
 })();
 
