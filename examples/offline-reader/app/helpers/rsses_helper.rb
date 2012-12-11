@@ -1,0 +1,2 @@
+module RssesHelper
+end

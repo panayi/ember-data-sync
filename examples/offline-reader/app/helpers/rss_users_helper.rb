@@ -1,0 +1,2 @@
+module RssUsersHelper
+end
