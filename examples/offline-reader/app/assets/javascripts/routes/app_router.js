@@ -1,34 +1,48 @@
 OfflineReader.Router = Ember.Router.extend({
   location: 'hash',
+  enableLogging: true,
 
   root: Ember.Route.extend({
+    gotoBlank: Ember.Route.transitionTo('index.blank'),
+    gotoFeed: Ember.Route.transitionTo('index.pages'),
+    gotoPage: Ember.Route.transitionTo('index.page'),
+
     index: Ember.Route.extend({
       route: '/',
 
       connectOutlets: function(router) {
         router.get('applicationController').connectOutlet({ name: 'rsses', context: OfflineReader.Rss.find(), outletName: 'rsses' });
-      }
-    }),
+      },
 
-    rss: Ember.Route.extend({
-      route: '/view',
+      blank: Ember.Route.extend({
+        route: '/'
+      }),
 
-      index: Ember.Route.extend({
+      pages: Ember.Route.extend({
         route: '/rss/:rss_id',
 
-        connectOutlet: function(router, context) {
+        connectOutlets: function(router, context) {
+          router.get('applicationController').connectOutlet({ name: 'rss', context: context, outletName: 'bogus' });
           router.get('applicationController').connectOutlet({ name: 'pages', context: OfflineReader.Page.find({rss: context}) });
         }
       }),
 
-      show: Ember.Route.extend({
+      page: Ember.Route.extend({
         route: '/page/:page_id',
 
-        connectOutlet: function(router, context) {
-          router.get('applicationController').connectOutlet({ name: 'pages', context: OfflineReader.Page.find(context.id) });
+        connectOutlets: function(router, context) {
+          router.get('applicationController').connectOutlet({ name: 'page', context: OfflineReader.Page.find(context.id) });
         }
       })
     }),
+
+    createNewRss: function(router) {
+      var url = router.applicationController.get('newRssUrl');
+      var rssRecord = router.store.createRecord(OfflineReader.Rss, { url: url });
+      router.store.commit();
+
+      router.send('gotoFeed', rssRecord);
+    }
   })
 });
 

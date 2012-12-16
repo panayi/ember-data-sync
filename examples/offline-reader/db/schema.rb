@@ -11,40 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211090459) do
+ActiveRecord::Schema.define(:version => 20121210174849) do
 
   create_table "pages", :force => true do |t|
+    t.string   "uuid"
     t.string   "url"
     t.string   "title"
     t.text     "body"
-    t.integer  "rss_id"
+    t.string   "rss_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.datetime "deleted_at"
   end
 
   add_index "pages", ["rss_id"], :name => "index_pages_on_rss_id"
-
-  create_table "rss_users", :force => true do |t|
-    t.integer  "rss_id"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "rss_users", ["rss_id"], :name => "index_rss_users_on_rss_id"
-  add_index "rss_users", ["user_id"], :name => "index_rss_users_on_user_id"
+  add_index "pages", ["uuid"], :name => "index_pages_on_uuid", :unique => true
 
   create_table "rsses", :force => true do |t|
+    t.string   "uuid"
     t.string   "url"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.datetime "deleted_at"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "username"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+  add_index "rsses", ["uuid"], :name => "index_rsses_on_uuid", :unique => true
 
 end

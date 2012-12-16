@@ -52,7 +52,7 @@ DS._InternalSyncSerializer = DS.JSONSerializer.extend({
 
   addRelationships: function(serialized, record, includeHasMany) {
     record.eachAssociation(function(name, relationship) {
-      if (relationship.kind === 'hasMany' && includeHasMany) {
+      if (relationship.kind === 'belongsTo' || (relationship.kind === 'hasMany' && includeHasMany)) {
         this.addRelationship(serialized, record, name, relationship.kind);
       }
     }, this);
@@ -73,7 +73,7 @@ DS._ServerStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
 
   copyAndCommit: function(commitDetails) {
     var transaction = this.defaultTransaction;
-    eachModifiedRecord(commitDetails, function(bucketType, serializedRecord) {
+    this.eachModifiedRecord(commitDetails, function(bucketType, serializedRecord) {
       var record = this.createRecord(serializedRecord.type, serializedRecord.data);
       transaction.removeFromBucket('created', record);
       transaction.addToBucket(bucketType, record);
@@ -104,7 +104,7 @@ DS._ServerStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
 
   alsoCommitToClient: function(type, id, record, modificationKind) {
     var internalSerializedData = this.internalSerializer.serialize(record, { includeId: true });
-    get(this, 'clientStore').copyAndCommit(type, id, internalSerializedData, modificationKind);
+    get(this, 'clientStore').copyAndCommit(type, id, internalSerializedData, record._data, modificationKind);
   },
 
   didCompleteDownSync: function() {
@@ -236,7 +236,7 @@ DS.SyncStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
     var pendingUpSyncRecords = [];
     var transaction = this.normalTransaction();
 
-    eachModifiedRecord(commitDetails, function(bucketType, record) {
+    this.eachModifiedRecord(commitDetails, function(bucketType, record) {
       pendingUpSyncRecords.pushObject(this.createPendingUpSyncRecord(transaction, bucketType, record));
     }, this);
 
@@ -257,17 +257,19 @@ DS.SyncStore = DS.Store.extend(DS._ModifiedRecordsHelpers, {
   /*                             */
   /*  Down-sync related methods  */
 
-  copyAndCommit: function(type, id, data, modificationKind) {
+  copyAndCommit: function(type, id, serializedData, data, modificationKind) {
     var transaction = this.normalTransaction();
 
     if (modificationKind === 'created') {
-      transaction.createRecord(type, data);
+      var record = transaction.createRecord(type, serializedData);
+      record._data = data;
       transaction.commit();
     } else {
       var record = this.find(type, id);
       record.setupDidLoad(function() {
         transaction.add(this);
-        this.setProperties(data);
+        this.setProperties(serializedData);
+        this._data = data;
         transaction.commit();
       });
     }

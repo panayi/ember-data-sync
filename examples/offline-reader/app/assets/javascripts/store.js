@@ -1,14 +1,18 @@
 OfflineReader.Store = DS.SyncStore.extend({
   revision: 10,
-  adapter: DS.RESTAdapter.create({
+  adapter: DS.IndexedDBAdapter.create({
   	mappings: {
-  		rss: OfflineReader.rss,
-  		rsses: OfflineReader.rss,
-  		page: OfflineReader.page,
-  		pages: OfflineReader.pages,
-  		user: OfflineReader.user,
-  		users: OfflineReader.users
+  		rss: 'OfflineReader.Rss',
+  		rsses: 'OfflineReader.Rss',
+  		page: 'OfflineReader.Page',
+  		pages: 'OfflineReader.Page'
   	}
   })
 });
+
+
+DS._ServerAdapter.reopen({
+  plurals: {"rss": "rsses"}
+});
+
 

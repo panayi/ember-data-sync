@@ -1,3 +1,4 @@
 OfflineReader.PagesView = Ember.View.extend({
-  templateName: 'pages'
+  templateName: 'pages',
+  tagName: 'ul'
 });

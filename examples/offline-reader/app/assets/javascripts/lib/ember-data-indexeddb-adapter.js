@@ -94,7 +94,8 @@ var get = Ember.get, set = Ember.set;
 
 DS.IndexedDBSerializer = DS.JSONSerializer.create({
   addBelongsTo: function(hash, record, key, relationship) {
-    hash[relationship.key] = get(get(record, key), 'id');
+    hash[relationship.key] = get(record, key);
+    // hash[relationship.key] = get(get(record, key), 'id');
   },
 
   addHasMany: function(hash, record, key, relationship) {

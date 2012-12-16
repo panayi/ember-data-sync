@@ -6,6 +6,12 @@
   </div>
 </div>
 <div class="container-fluid" id="main">
+	<div class="row-fluid">
+		<form class="form form-inline" {{action createNewRss on="submit"}}>
+			{{view Ember.TextField placeholder="Enter an RSS feed" valueBinding="newRssUrl"}}
+			<button class="btn btn-primary btn-small">Add</button>
+		</form>
+	</div>
   <div class="row-fluid">
     <div class="span3">
       <div class="well">

@@ -1,5 +1,3 @@
-<h1>Pages</h1>
-
-<p>Your content here.</p>
-
-{{outlet}}
+{{#each page in controller}}
+  {{view Ember.View templateName="page_in_list" controllerBinding="page" tagName="li"}}
+{{/each}}

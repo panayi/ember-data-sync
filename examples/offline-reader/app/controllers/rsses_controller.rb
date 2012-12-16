@@ -1,47 +1,13 @@
 class RssesController < ApplicationController
-  # GET /rsses
-  # GET /rsses.json
   def index
-    @rsses = Rss.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @rsses }
-    end
-  end
-
-  # GET /rsses/1
-  # GET /rsses/1.json
-  def show
-    @rss = Rss.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @rss }
-    end
-  end
-
-  # GET /rsses/new
-  # GET /rsses/new.json
-  def new
-    @rss = Rss.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @rss }
-    end
-  end
-
-  # GET /rsses/1/edit
-  def edit
-    @rss = Rss.find(params[:id])
+    # home
   end
 
   # POST /rsses
   # POST /rsses.json
   def create
     @rss = Rss.new(params[:rss])
-
+    @rss.uuid = params[:rss][:id]
     respond_to do |format|
       if @rss.save
         format.html { redirect_to @rss, notice: 'Rss was successfully created.' }
@@ -56,7 +22,7 @@ class RssesController < ApplicationController
   # PUT /rsses/1
   # PUT /rsses/1.json
   def update
-    @rss = Rss.find(params[:id])
+    @rss = Rss.find_by_uuid(params[:id])
 
     respond_to do |format|
       if @rss.update_attributes(params[:rss])
@@ -72,7 +38,7 @@ class RssesController < ApplicationController
   # DELETE /rsses/1
   # DELETE /rsses/1.json
   def destroy
-    @rss = Rss.find(params[:id])
+    @rss = Rss.find_by_uuid(params[:id])
     @rss.destroy
 
     respond_to do |format|

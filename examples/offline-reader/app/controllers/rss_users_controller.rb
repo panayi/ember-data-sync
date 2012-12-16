@@ -1,2 +1,0 @@
-class RssUsersController < ApplicationController
-end
