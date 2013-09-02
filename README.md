@@ -1,3 +1,9 @@
+*** WIP ***
+===========
+Upgrade code to use EMBER DATA 1.0 BETA 1. See[EMBER 1.0 RELEASED](http://emberjs.com/blog/2013/08/31/ember-1-0-released.html#toc_ember-data-1-0-beta-1).
+
+
+
 Client <=> Server data synchronization for Ember-Data
 =================================================
 
